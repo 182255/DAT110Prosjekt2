@@ -69,13 +69,9 @@ public class Storage {
 	public void deleteTopic(String topic) {
 
 		// TODO: delete topic from the storage
-		if(subscriptions.containsValue(topic)) {
-			subscriptions.entrySet().remove(topic);
+		if (subscriptions.keySet().contains(topic)) {
+			subscriptions.remove(topic);
 		}
-		
-			
-			
-		
 
 	}
 
@@ -83,17 +79,15 @@ public class Storage {
 
 		// TODO: add the user as subscriber to the topic
 
-		if(subscriptions.contains(topic)) {
-			Set<String> newUser = subscriptions.get(topic);
-			subscriptions.put(user, newUser);
-		}
-
+		
+			Set<String> s = subscriptions.get(topic);
+			subscriptions.put(user,s);
+		
 	}
 
 	public void removeSubscriber(String user, String topic) {
 
 		// TODO: remove the user as subscriber to the topic
-		
 
 	}
 }
