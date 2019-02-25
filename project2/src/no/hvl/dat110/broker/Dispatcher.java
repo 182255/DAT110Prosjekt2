@@ -10,6 +10,7 @@ import no.hvl.dat110.messages.DeleteTopicMsg;
 import no.hvl.dat110.messages.DisconnectMsg;
 import no.hvl.dat110.messages.Message;
 import no.hvl.dat110.messages.MessageType;
+import no.hvl.dat110.messages.MessageUtils;
 import no.hvl.dat110.messages.PublishMsg;
 import no.hvl.dat110.messages.SubscribeMsg;
 import no.hvl.dat110.messages.UnsubscribeMsg;
@@ -157,16 +158,15 @@ public class Dispatcher extends Stopable {
 
 		Logger.log("onPublish:" + msg.toString());
 
-		// TODO: publish the message to clients subscribed to the topic
-//		storage.
 		String user = msg.getUser();
 		String topic = msg.getTopic();
-		ClientSession client = storage.getSession(user);
-		
-		if (storage.getSubscribers(topic).contains(user)) {
-			client.send(msg);
+		Collection<ClientSession> clients = storage.getSessions();
+
+		for (ClientSession c : clients) {
+			if (storage.subscriptions.get(topic).contains(user)) {
+				c.send(msg);
+			}
 		}
-//		throw new RuntimeException("not yet implemented");
 
 	}
 }
