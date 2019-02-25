@@ -1,24 +1,29 @@
 package no.hvl.dat110.messages;
 
+import java.util.HashSet;
+import java.util.HashSet;
+import java.util.Set;
+
 public class SubscribeMsg extends Message {
 	// TODO:
 	// Implement objectvariables, constructor, get/set-methods, and toString method
 
-	private String user;
+	private Set<String> users;
 	private String topic;
 
 	public SubscribeMsg(String user, String topic) {
 		super(MessageType.SUBSCRIBE, user);
-		this.user = user;
+		users = new HashSet<String>();
+		users.add(user);
 		this.topic = topic;
 	}
 
-	public String getUser() {
-		return user;
+	public Set<String> getUsers() {
+		return users;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsers(Set<String> users) {
+		this.users = users;
 	}
 
 	public String getTopic() {
@@ -29,6 +34,9 @@ public class SubscribeMsg extends Message {
 		this.topic = topic;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "SubscribeMsg [users=" + users + ", topic=" + topic + "]";
+	}
 
 }

@@ -1,25 +1,29 @@
 package no.hvl.dat110.messages;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class UnsubscribeMsg extends Message {
 
 	// TODO:
 	// Implement objectvariables, constructor, get/set-methods, and toString method
 
-	private String user;
+	private Set<String> users;
 	private String topic;
 
 	public UnsubscribeMsg(String user, String topic) {
 		super(MessageType.UNSUBSCRIBE, user);
-		this.user = user;
+		users = new HashSet<String>();
+		users.remove(user);
 		this.topic = topic;
 	}
 
-	public String getUser() {
-		return user;
+	public Set<String> getUsers() {
+		return users;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsers(Set<String> users) {
+		this.users = users;
 	}
 
 	public String getTopic() {
@@ -32,7 +36,7 @@ public class UnsubscribeMsg extends Message {
 
 	@Override
 	public String toString() {
-		return "UnsubscribeMsg [user=" + user + ", topic=" + topic + "]";
+		return "UnsubscribeMsg [users=" + users + ", topic=" + topic + "]";
 	}
 
 }
