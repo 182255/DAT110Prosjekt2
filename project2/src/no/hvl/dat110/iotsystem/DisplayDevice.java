@@ -12,13 +12,18 @@ public class DisplayDevice {
 		
 		System.out.println("Display starting ...");
 		
-		// TODO - START
-				
-		// TODO - END
+		Client client = new Client("DisplayDevice", Common.BROKERHOST, Common.BROKERPORT);
+		client.connect();
+		client.createTopic(Common.TEMPTOPIC);
+		client.subscribe(Common.TEMPTOPIC);
 		
+		for(int i = 0; i < COUNT; i++) {
+			PublishMsg msg = (PublishMsg)client.receive();
+			System.out.println("Temperature from Broker: " + msg.getMessage());
+		}
+		
+		client.disconnect();
 		System.out.println("Display stopping ... ");
-		
-		throw new RuntimeException("not yet implemented");
-		
+				
 	}
 }
