@@ -43,54 +43,39 @@ public class Storage {
 
 	public void addClientSession(String user, Connection connection) {
 
-		// TODO: add corresponding client session to the storage
 		clients.put(user, new ClientSession(user, connection));
-//		throw new RuntimeException("not yet implemented");
 
 	}
 
 	public void removeClientSession(String user) {
 
-		// TODO: remove client session for user from the storage
 		clients.remove(user);
-//		throw new RuntimeException("not yet implemented");
 
 	}
 
 	public void createTopic(String topic) {
 
-		// TODO: create topic in the storage
 		Set<String> s = new HashSet<String>();
+		s.add(topic);
 
 		subscriptions.put(topic, s);
 	}
 
 	public void deleteTopic(String topic) {
 
-		// TODO: delete topic from the storage
-		if (subscriptions.keySet().contains(topic)) {
-			subscriptions.remove(topic);
-		}
+		subscriptions.remove(topic);
 
 	}
 
 	public void addSubscriber(String user, String topic) {
 
-		// TODO: add the user as subscriber to the topic
-		if (subscriptions.containsKey(topic)) {
-			Set<String> nyUser = subscriptions.get(topic);
-			nyUser.add(user);
-		}
+		subscriptions.get(topic).add(user);
 
 	}
 
 	public void removeSubscriber(String user, String topic) {
 
-		// TODO: remove the user as subscriber to the topic
-		if (subscriptions.containsKey(topic)) {
-			Set<String> users = subscriptions.get(topic);
-			users.remove(user);
-		}
+		subscriptions.get(topic).remove(user);
 
 	}
 }
