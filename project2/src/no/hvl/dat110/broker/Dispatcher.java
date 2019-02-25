@@ -105,21 +105,25 @@ public class Dispatcher extends Stopable {
 
 	public void onCreateTopic(CreateTopicMsg msg) {
 
-		Logger.log("onCreateTopic:" + msg.toString());
 
-		// TODO: create the topic in the broker storage 
+		// TODO: create the topic in the broker storage
+		String topic = msg.getTopic();
+		Logger.log("onCreateTopic:" + msg.toString());
+		storage.createTopic(topic);
 		
-		throw new RuntimeException("not yet implemented");
+//		throw new RuntimeException("not yet implemented");
 
 	}
 
 	public void onDeleteTopic(DeleteTopicMsg msg) {
 
-		Logger.log("onDeleteTopic:" + msg.toString());
 
 		// TODO: delete the topic from the broker storage
+		String topic = msg.getTopic();
+		Logger.log("onDeleteTopic:" + msg.toString());
+		storage.deleteTopic(topic);
 		
-		throw new RuntimeException("not yet implemented");
+//		throw new RuntimeException("not yet implemented");
 	}
 
 	public void onSubscribe(SubscribeMsg msg) {
