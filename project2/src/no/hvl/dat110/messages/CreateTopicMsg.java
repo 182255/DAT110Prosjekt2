@@ -1,21 +1,26 @@
 package no.hvl.dat110.messages;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CreateTopicMsg extends Message {
-	private String user;
+	private Set<String> users;
 	private String topic;
 
 	public CreateTopicMsg(String user, String topic) {
 		super(MessageType.CREATETOPIC, user);
-		this.user = user;
+		users = new HashSet<String>();
+		users.add(user);
+//		this.user = user;
 		this.topic = topic;
 	}
 
-	public String getUser() {
-		return user;
+	public Set<String> getUsers() {
+		return users;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsers(Set<String> users) {
+		this.users = users;
 	}
 
 	public String getTopic() {
@@ -28,7 +33,9 @@ public class CreateTopicMsg extends Message {
 
 	@Override
 	public String toString() {
-		return "CreateTopicMsg [user=" + user + ", topic=" + topic + "]";
+		return "CreateTopicMsg [users=" + users + ", topic=" + topic + "]";
 	}
+	
+	
 
 }

@@ -1,23 +1,27 @@
 package no.hvl.dat110.messages;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DeleteTopicMsg extends Message {
-	private String user;
+	private Set<String> users;
 	private String topic;
 
 	// TODO:
 	// Implement objectvariables, constructor, get/set-methods, and toString method
 	public DeleteTopicMsg(String user, String topic) {
 		super(MessageType.DELETETOPIC, user);
-		this.user = user;
+		users = new HashSet<String>();
+		users.add(user);
 		this.topic = topic;
 	}
 
-	public String getUser() {
-		return user;
+	public Set<String> getUsers() {
+		return users;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUsers(Set<String> users) {
+		this.users = users;
 	}
 
 	public String getTopic() {
@@ -30,7 +34,9 @@ public class DeleteTopicMsg extends Message {
 
 	@Override
 	public String toString() {
-		return "DeleteTopicMsg [user=" + user + ", topic=" + topic + "]";
+		return "DeleteTopicMsg [users=" + users + ", topic=" + topic + "]";
 	}
+	
+	
 
 }
