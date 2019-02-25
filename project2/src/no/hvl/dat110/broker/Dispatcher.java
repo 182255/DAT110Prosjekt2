@@ -1,11 +1,18 @@
 package no.hvl.dat110.broker;
 
-import java.util.Set;
 import java.util.Collection;
 
 import no.hvl.dat110.common.Logger;
 import no.hvl.dat110.common.Stopable;
-import no.hvl.dat110.messages.*;
+import no.hvl.dat110.messages.ConnectMsg;
+import no.hvl.dat110.messages.CreateTopicMsg;
+import no.hvl.dat110.messages.DeleteTopicMsg;
+import no.hvl.dat110.messages.DisconnectMsg;
+import no.hvl.dat110.messages.Message;
+import no.hvl.dat110.messages.MessageType;
+import no.hvl.dat110.messages.PublishMsg;
+import no.hvl.dat110.messages.SubscribeMsg;
+import no.hvl.dat110.messages.UnsubscribeMsg;
 import no.hvl.dat110.messagetransport.Connection;
 
 public class Dispatcher extends Stopable {
@@ -92,7 +99,7 @@ public class Dispatcher extends Stopable {
 
 	}
 
-	// called by dispatch upon receiving a disconnect message 
+	// called by dispatch upon receiving a disconnect message
 	public void onDisconnect(DisconnectMsg msg) {
 
 		String user = msg.getUser();
@@ -105,50 +112,44 @@ public class Dispatcher extends Stopable {
 
 	public void onCreateTopic(CreateTopicMsg msg) {
 
-
 		// TODO: create the topic in the broker storage
 		String topic = msg.getTopic();
 		Logger.log("onCreateTopic:" + msg.toString());
 		storage.createTopic(topic);
-		
+
 //		throw new RuntimeException("not yet implemented");
 
 	}
 
 	public void onDeleteTopic(DeleteTopicMsg msg) {
 
-
 		// TODO: delete the topic from the broker storage
 		String topic = msg.getTopic();
 		Logger.log("onDeleteTopic:" + msg.toString());
 		storage.deleteTopic(topic);
-		
+
 //		throw new RuntimeException("not yet implemented");
 	}
 
 	public void onSubscribe(SubscribeMsg msg) {
-
 
 		// TODO: subscribe user to the topic
 		String user = msg.getUser();
 		String topic = msg.getTopic();
 		Logger.log("onSubscribe:" + msg.toString());
 		storage.addSubscriber(user, topic);
-		
-		
+
 //		throw new RuntimeException("not yet implemented");
-		
+
 	}
 
 	public void onUnsubscribe(UnsubscribeMsg msg) {
-
 
 		// TODO: unsubscribe user to the topic
 		String user = msg.getUser();
 		String topic = msg.getTopic();
 		Logger.log("onUnsubscribe:" + msg.toString());
 		storage.removeSubscriber(user, topic);
-		
 
 	}
 
@@ -157,8 +158,15 @@ public class Dispatcher extends Stopable {
 		Logger.log("onPublish:" + msg.toString());
 
 		// TODO: publish the message to clients subscribed to the topic
+//		storage.
+		String user = msg.getUser();
+		String topic = msg.getTopic();
+		ClientSession client = storage.getSession(user);
 		
-		throw new RuntimeException("not yet implemented");
-		
+		if (storage.getSubscribers(topic).contains(user)) {
+			client.send(msg);
+		}
+//		throw new RuntimeException("not yet implemented");
+
 	}
 }
