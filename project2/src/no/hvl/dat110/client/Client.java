@@ -51,7 +51,8 @@ public class Client extends Thread {
 
 		send(msg);
 
-		connection.close();
+		this.connection.close();
+		this.connection = null;
 
 	}
 
