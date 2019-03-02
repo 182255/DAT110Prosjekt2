@@ -91,12 +91,19 @@ public class Dispatcher extends Stopable {
 
 	// called from Broker after having established the underlying connection
 	public void onConnect(ConnectMsg msg, Connection connection) {
-
 		String user = msg.getUser();
 
 		Logger.log("onConnect:" + msg.toString());
-
+			
 		storage.addClientSession(user, connection);
+		if(storage.getOffline().containsKey(user)) {
+			for(String id: storage.getOffline().get(user)) {
+				MessageUtils.send(connection, storage.buffer.get(id));
+				Logger.log("sending msg to" + user);
+				storage.buffer.remove(id);
+			}
+		}
+		
 
 	}
 
@@ -108,6 +115,7 @@ public class Dispatcher extends Stopable {
 		Logger.log("onDisconnect:" + msg.toString());
 
 		storage.removeClientSession(user);
+		storage.addToOfflineList(user);
 
 	}
 
@@ -118,7 +126,6 @@ public class Dispatcher extends Stopable {
 		Logger.log("onCreateTopic:" + msg.toString());
 		storage.createTopic(topic);
 
-//		throw new RuntimeException("not yet implemented");
 
 	}
 
@@ -129,7 +136,6 @@ public class Dispatcher extends Stopable {
 		Logger.log("onDeleteTopic:" + msg.toString());
 		storage.deleteTopic(topic);
 
-//		throw new RuntimeException("not yet implemented");
 	}
 
 	public void onSubscribe(SubscribeMsg msg) {
@@ -140,7 +146,6 @@ public class Dispatcher extends Stopable {
 		Logger.log("onSubscribe:" + msg.toString());
 		storage.addSubscriber(user, topic);
 
-//		throw new RuntimeException("not yet implemented");
 
 	}
 
@@ -166,7 +171,20 @@ public class Dispatcher extends Stopable {
 			if (storage.subscriptions.get(topic).contains(user)) {
 				c.send(msg);
 			}
+			
 		}
+		//find user who is offline sa map offline
+		//add the message sa buffer
+		
+		for(String subbedU : storage.getSubscribers(topic)){
+			if(storage.getOffline().containsKey(subbedU)) {
+				storage.addMessageToBuffer(subbedU, msg);
+			}
+			
+		}
+		
+		
+		
 
 	}
 }
