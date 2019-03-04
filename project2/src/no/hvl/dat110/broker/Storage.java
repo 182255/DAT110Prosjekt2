@@ -27,7 +27,7 @@ public class Storage {
 		return clients.values();
 	}
 
-	public Set<String> getTopics() {
+	public Set<String> getTopics() { 
 
 		return subscriptions.keySet();
 

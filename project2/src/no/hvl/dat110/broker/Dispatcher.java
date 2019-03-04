@@ -94,16 +94,15 @@ public class Dispatcher extends Stopable {
 		String user = msg.getUser();
 
 		Logger.log("onConnect:" + msg.toString());
-			
+
 		storage.addClientSession(user, connection);
-		if(storage.getOffline().containsKey(user)) {
-			for(String id: storage.getOffline().get(user)) {
+		if (storage.getOffline().containsKey(user)) {
+			for (String id : storage.getOffline().get(user)) {
 				MessageUtils.send(connection, storage.buffer.get(id));
 				Logger.log("sending msg to" + user);
 				storage.buffer.remove(id);
 			}
 		}
-		
 
 	}
 
@@ -121,17 +120,14 @@ public class Dispatcher extends Stopable {
 
 	public void onCreateTopic(CreateTopicMsg msg) {
 
-		// TODO: create the topic in the broker storage
 		String topic = msg.getTopic();
 		Logger.log("onCreateTopic:" + msg.toString());
 		storage.createTopic(topic);
-
 
 	}
 
 	public void onDeleteTopic(DeleteTopicMsg msg) {
 
-		// TODO: delete the topic from the broker storage
 		String topic = msg.getTopic();
 		Logger.log("onDeleteTopic:" + msg.toString());
 		storage.deleteTopic(topic);
@@ -140,18 +136,15 @@ public class Dispatcher extends Stopable {
 
 	public void onSubscribe(SubscribeMsg msg) {
 
-		// TODO: subscribe user to the topic
 		String user = msg.getUser();
 		String topic = msg.getTopic();
 		Logger.log("onSubscribe:" + msg.toString());
 		storage.addSubscriber(user, topic);
 
-
 	}
 
 	public void onUnsubscribe(UnsubscribeMsg msg) {
 
-		// TODO: unsubscribe user to the topic
 		String user = msg.getUser();
 		String topic = msg.getTopic();
 		Logger.log("onUnsubscribe:" + msg.toString());
@@ -171,20 +164,15 @@ public class Dispatcher extends Stopable {
 			if (storage.subscriptions.get(topic).contains(user)) {
 				c.send(msg);
 			}
-			
+
 		}
-		//find user who is offline sa map offline
-		//add the message sa buffer
-		
-		for(String subbedU : storage.getSubscribers(topic)){
-			if(storage.getOffline().containsKey(subbedU)) {
+
+		for (String subbedU : storage.getSubscribers(topic)) {
+			if (storage.getOffline().containsKey(subbedU)) {
 				storage.addMessageToBuffer(subbedU, msg);
 			}
-			
+
 		}
-		
-		
-		
 
 	}
 }

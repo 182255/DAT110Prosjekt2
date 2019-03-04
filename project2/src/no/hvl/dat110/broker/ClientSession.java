@@ -18,7 +18,9 @@ public class ClientSession {
 	public void disconnect() {
 
 		if (connection != null) {
-			connection.close();
+			this.connection.close();
+			this.connection = null;
+			
 		}
 	}
 

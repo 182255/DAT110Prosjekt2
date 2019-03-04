@@ -79,7 +79,7 @@ public class Client extends Thread {
 		send(msg);
 
 	}
-
+ 
 	public void createTopic(String topic) {
 
 		CreateTopicMsg msg = new CreateTopicMsg(user, topic);
